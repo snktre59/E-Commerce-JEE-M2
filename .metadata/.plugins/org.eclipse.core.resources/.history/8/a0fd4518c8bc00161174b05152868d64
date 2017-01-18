@@ -1,0 +1,8 @@
+package org.commerce;
+
+import javax.ejb.Remote;
+
+@Remote
+public interface FactureRemote {
+
+}

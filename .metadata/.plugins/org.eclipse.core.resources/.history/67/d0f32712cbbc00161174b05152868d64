@@ -1,0 +1,120 @@
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.commerce.Article;
+import org.commerce.ArticleRemote;
+import org.commerce.Commande;
+import org.commerce.CommandeRemote;
+import org.commerce.Facture;
+import org.commerce.FactureRemote;
+import org.commerce.Utilisateur;
+
+import jdk.nashorn.internal.ir.debug.JSONWriter;
+
+/**
+ * Servlet implementation class Panier
+ */
+@WebServlet("/Panier")
+public class Panier extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	@EJB
+	private ArticleRemote article;
+
+	@EJB
+	private CommandeRemote commande;
+	
+	@EJB
+	private FactureRemote facture;
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public Panier() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setHeader("Pragma", "no-cache");
+		// TODO Auto-generated method stub
+		HttpSession hs = request.getSession();
+		List<Integer> l = (List<Integer>) hs.getAttribute("panier");
+		List<Article> panier = article.getArticlePanier(l);
+		if (!panier.isEmpty()) {
+			if(hs.getAttribute("currency").equals("USD")) { 
+				for(Article liste :panier) {
+					liste.setPrix(liste.getPrix() * 1.07);
+				}
+			}
+			request.setAttribute("panier", panier);
+		}
+		request.setAttribute("produits", l);
+		request.setAttribute("title", "Mon Panier");
+		getServletContext().getRequestDispatcher("/panier.jsp").forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		boolean ok = false;
+		double total=0;
+		HttpSession hs = request.getSession();
+		List<Integer> l = (List<Integer>) hs.getAttribute("panier");
+		List<Article> panier = article.getArticlePanier(l);
+		for (Article liste : panier) {
+			if (liste.getStock() < Integer.valueOf(request.getParameter(String.valueOf(liste.getId())))) {
+				total+=liste.getPrix();
+				ok = true;
+				/*
+				 * Writer out = response.getWriter();
+				 * 
+				 * JSONWriter js; String objectToReturn = "{ id:" +
+				 * liste.getId() + ", message: 'Stock insuffisant' }"; //
+				 * outt.write("Stock insuffisant"); // out.flush(); //
+				 * out.close(); response.setContentType("application/json");
+				 * out.write(objectToReturn); out.flush(); out.close();
+				 */
+			}
+
+		}
+		if (hs.getAttribute("utilisateur") == null) {
+			
+			request.setAttribute("error", "Vous devez être connecté.");
+			getServletContext().getRequestDispatcher("/panier.jsp").forward(request, response);
+		}else {
+			ok=true;
+		}
+		if (ok) {
+			Utilisateur user = (Utilisateur) hs.getAttribute("utilisateur");
+			Facture f =facture.addFacture(user.getId(), total);
+			for (Article liste : panier) {
+				 	
+					
+					commande.addCommande(1,liste.getId(), user.getId(), liste.getPrix(), Integer.valueOf(request.getParameter(String.valueOf(liste.getId()))), f);
+					article.MaJStockArticle(liste.getId(),liste.getStock() - Integer.valueOf(request.getParameter(String.valueOf(liste.getId()))));
+				
+			}
+			hs.removeAttribute("panier");
+			response.sendRedirect("");
+		}
+	}
+
+}

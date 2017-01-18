@@ -1,0 +1,122 @@
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.commerce.Utilisateur;
+import org.commerce.UtilisateurRemote;
+
+/**
+ * Servlet implementation class Connexion
+ */
+@WebServlet("/connexion")
+public class Connexion extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	@EJB
+	private UtilisateurRemote user;
+
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		// Lie la servlet à la jsp connexion
+		// response.sendRedirect("connexion.jsp");
+		// response.setHeader("/connexion", "connexion.jsp");
+		request.setAttribute("title", "connexion");
+		getServletContext().getRequestDispatcher("/connexion.jsp").forward(request, response);
+	}
+
+	private static SecretKeySpec getKey(String secretKey) {
+		MessageDigest digest = null;
+		try {
+			digest = MessageDigest.getInstance("MD5");
+
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+
+		try {
+			return new SecretKeySpec(digest.digest(new String(secretKey.getBytes(), "UTF8").getBytes()), "AES");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static String chiffrer(String s) {
+		String encrypted = null;
+		try {
+			// Instantiate the cipher
+			Cipher cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, getKey("testduhash"));
+			// Récupère la clé secrète
+			byte[] cipherText = cipher.doFinal(s.getBytes("ISO-8859-1"));
+			encrypted = new String(cipherText);
+		} catch (Exception e) {
+			System.out.println("Impossible to encrypt with AES algorithm: string=(" + s + ")");
+		}
+		return encrypted;
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<Utilisateur> l = null;
+		String email = String.valueOf(request.getParameter("email"));
+		String mdp = String.valueOf(request.getParameter("mdp"));
+		l = (List<Utilisateur>) user.Connexion(email, chiffrer(mdp));
+		if (l.isEmpty()) {
+			/*
+			 * RequestDispatcher requestDispatcher; requestDispatcher =
+			 * request.getRequestDispatcher("/connexion");
+			 * requestDispatcher.forward(request, response);
+			 *
+			*/
+			Writer out = response.getWriter();
+			out.write("Mauvais mot de passe");
+			out.flush();
+			out.close();
+			
+			//request.setAttribute("errormdp", "mdp pas bon");
+			//request.getRequestDispatcher("connexion.jsp").forward(request, response);
+
+		} else {
+			HttpSession hs = request.getSession();
+			request.getSession().setAttribute("utilisateur", l.get(0));
+			/*
+			 * Writer out = response.getWriter();
+			 * out.write("<html><head><title>Result</title></head><body>");
+			 * 
+			 * out.write("Result=" + l.get(0).getEmail());
+			 * 
+			 * out.write("</body>"); out.flush(); out.close();
+			 */
+
+			response.sendRedirect(request.getHeader("referer"));
+		}
+
+		// response.sendRedirect("connexion.jsp");
+	}
+
+}

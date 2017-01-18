@@ -1,0 +1,76 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Page d'administration</title>
+<link href="//fonts.googleapis.com/css?family=Roboto:400,300,500,700"
+	rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/EcommerceWeb/css/grid.bootstrap.css">
+<link rel="stylesheet" href="/EcommerceWeb/css/style.css">
+<script type="text/javascript" src="/EcommerceWeb/js/jquery.js"></script>
+</head>
+<body>
+
+	<div id="main">
+		<div class="cart">
+			<div class="container">
+				<div class="row col-md-10">
+
+					<article>
+						<h3>Liste des factures</h3>
+						<div>
+							<span style="margin-right:150px;display: inline;">Id facture</span>
+							<span style="margin-right:350px;    display: inline;">Nom client</span>
+							<span style="display: inline;">Total</span>
+						</div>
+							<c:forEach items="${commandes}" var="p">
+								<div>
+									<span style="margin-right:150px;    display: inline;">${p.getFactures().getId()}</span>
+									<span style="margin-right:350px;    display: inline;">${p.getFactures().getUser().getNom()}
+										${p.getFactures().getUser().getPrenom()}</span>
+									<span style="display: inline;">${p.getFactures().getTotal()}</span>
+									<span class="bouton" id="B${p.getId()}"
+										onclick="javascript:afficher('${p.getId()}');">Voir le
+											details</span>
+								
+								</div>
+									<div id="${p.getId()}" style="display: none">
+									<div>
+										<span style="margin-right:50px;display: inline;">Id Article</span>
+										<span style="margin-right:350px;display: inline;">Désignation</span>
+										<span style="margin-right:50px;display: inline;">Quantité</span>
+										<span style="margin-right:50px;display: inline;">Prix/u</span>
+									</div>
+									<div>
+										<span style="margin-right:50px;display: inline;">${p.getArticles().getId()}</span>
+										<span style="margin-right:350px;display: inline;">${p.getArticles().getDesignation()}</span>
+										<span style="margin-right:50px;display: inline;">${p.getQuantite()}</span>
+										<span style="display: inline;">${p.getPrix()}</span>
+									</div>
+								</div>
+
+
+							</c:forEach>
+						
+					</article>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function afficher(id) {
+			if (document.getElementById(id).style.display == "none") {
+				document.getElementById(id).style.display = "block";
+				document.getElementById('B' + id).innerHTML = 'Cacher le détail';
+			} else {
+				document.getElementById(+id).style.display = "none";
+				document.getElementById('B' + id).innerHTML = 'Afficher le texte';
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>

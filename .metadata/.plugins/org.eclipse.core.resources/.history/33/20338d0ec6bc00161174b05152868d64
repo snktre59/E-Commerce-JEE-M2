@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="EcommerceEAR">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="Utilisateur.jar" deploy-path="/" handle="module:/resource/Utilisateur/Utilisateur">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="EcommerceJPA.jar" deploy-path="/lib" handle="module:/resource/EcommerceJPA/EcommerceJPA">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="EcommerceWeb.war" deploy-path="/" handle="module:/resource/EcommerceWeb/EcommerceWeb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Articles.jar" deploy-path="/" handle="module:/resource/Articles/Articles">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Commande.jar" deploy-path="/" handle="module:/resource/Commande/Commande">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Facture.jar" deploy-path="/" handle="module:/resource/Facture/Facture">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>

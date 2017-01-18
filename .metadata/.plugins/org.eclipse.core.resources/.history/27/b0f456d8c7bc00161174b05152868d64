@@ -1,0 +1,5 @@
+package org.commerce;
+
+public interface FactureRemote {
+
+}

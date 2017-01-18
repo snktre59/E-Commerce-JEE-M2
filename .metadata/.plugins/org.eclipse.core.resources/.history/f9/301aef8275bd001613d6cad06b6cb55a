@@ -1,0 +1,262 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:include page="header.jsp" />
+
+
+	<div id="main">
+		<div class="cart">
+			<div class="container">
+				<div class="row col-md-10">
+					<h1>Votre panier</h1>
+					<h2>Vous avez <span class="total_article">2 articles</span> dans votre	panier 	</h2>
+					<span class="error">${errorStock}</span>
+					<span class="error">${errorUser}</span>
+					<form id="formPanier" action="Panier" method="POST">
+					<c:forEach items="${panier}" var="p">
+
+					
+					<article class="row" data-id="${p.getId()}">
+						<div class="col-md-2">
+							<img src="image/${p.getId()}.jpg" alt="">
+						</div>
+						<div class="col-md-5">
+							<p>${p.getDesignation()}</p>
+							 <span class="error"></span><br>
+						</div>
+						<div class="col-md-3">
+							<div class="quantity">
+								<button type="button" class="moins">-</button>
+								<input type="text" name="${p.getId()}" value="1">
+								<button type="button" class="plus">+</button>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<p><fmt:formatNumber value="${p.getPrix()}" type="number" maxFractionDigits="2" /><%
+						if (session.getAttribute("currency").equals("EUR")) {
+					%>
+                                €
+                  <%
+						}  else  {
+					%> $  
+						<%
+						}
+					%></p>
+							<p>
+								<a href="/EcommerceWeb/removeArticlePanier?id=${p.getId()}">Supprimer</a>
+							</p>
+						</div>
+					</article>
+					</c:forEach>
+					
+					<div class="quick-checkout row">
+					
+						<p>
+							<span>Total <br /> <span class="total_article">2
+									articles</span></span><span id="totalPrice">300<%
+						if (session.getAttribute("currency").equals("EUR")) {
+					%>
+                                €
+                  <%
+						}  else  {
+					%> $  
+						<%
+						}
+					%></span>
+						</p>
+						
+						<button id="order" class="col-md-3" name="submit" type="submit">Commander</button>
+					</div>
+</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+	<footer class="container">
+		<span class="logo">WatchMe</span> <span class="copyright">©
+			2016 WATCHME</span> <a href=""><div class="icon icon--s">
+				<svg class="icon__cnt">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#ei-sc-facebook-icon"></use></svg>
+			</div></a> <a href=""><div class="icon icon--s">
+				<svg class="icon__cnt">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#ei-sc-twitter-icon"></use></svg>
+			</div></a> <a href=""><div class="icon icon--s">
+				<svg class="icon__cnt">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#ei-sc-google-plus-icon"></use></svg>
+			</div></a>
+	</footer>
+
+        <div class="popup">
+            <form action="connexion" method="POST" class="popup-connexion row popup-content" id="formConnexion">
+                <div class="col-md-6">
+                    <img src="image/montre1.jpeg" alt="">
+                </div>
+                <div class="col-md-6">
+                    <h4>Connectez vous</h4>
+                    <input type="text" name="email" placeholder="Email">
+                    <input type="password" name="mdp" placeholder="mdp">
+                    <span class="error"></span><br>
+                    <button class="btn-primary">Connexion</button>
+                </div>
+                <span class="redirectInscription">Vous n'avez pas encore de compte ? <a href="">Inscrivez-vous</a></span>
+            </form>
+            <form action="inscription" method="POST" class="popup-inscription row popup-content">
+                <div class="col-md-6">
+                    <img src="image/montre2.jpeg" alt="">
+                </div>
+                <div class="col-md-6">
+                    <h4>Inscrivez vous</h4>
+			        <input type="text" name="nom" placeholder="nom">
+			        <input type="text" name="prenom" placeholder="prenom">
+			        <input type="text" name="email" placeholder="email">
+			        <input type="password" name="mdp" placeholder="mot de passe">
+			        <input type="text" name="tel" placeholder="telephone">
+			        <input type="text" name="numRue" placeholder="numÃÂ©ro de rue">
+			        <input type="text" name="rue" placeholder="rue">
+			        <input type="text" name="codePostal" placeholder="code postal">
+			        <input type="text" name="ville" placeholder="ville">
+			        <input type="text" name="pays" placeholder="pays">
+			        
+			        <button class="btn-primary" name="submit" type="submit">Inscription</button>
+                </div>
+                <span class="redirectConnexion">Vous avez déjà  un compte ? <a href="">Connectez vous</a></span>
+            </form>
+        </div>
+	<script>
+		// Gestion + et - quantité
+		        $('.quantity .moins').on('click', function(){
+            var value = $(this).next('input').val();
+            value = parseInt(value) - 1;
+            if(value <= 0){
+                value = 1;
+            }
+            $(this).next('input').val(value);
+
+            var total = 0;
+            var totalPrice = 0;
+            $('article').each(function(){
+                total += parseInt($(this).find('input[type="text"]').val());
+                totalPrice += parseInt($(this).find('.col-md-2 p:eq(0)').text().slice(0, -1) * $(this).find('input[type="text"]').val())
+            });
+            $('.total_article').text(total+" articles");
+            $('#totalPrice').text(totalPrice+"€");
+        });
+
+        $('.quantity .plus').on('click', function(){
+            var value = $(this).prev('input').val();
+            value = parseInt(value) + 1;
+            $(this).prev('input').val(value);
+
+            var total = 0;
+            var totalPrice = 0;
+            $('article').each(function(){
+                total += parseInt($(this).find('input[type="text"]').val());
+                totalPrice += parseInt($(this).find('.col-md-2 p:eq(0)').text().slice(0, -1) * $(this).find('input[type="text"]').val())
+            });
+            $('.total_article').text(total+" articles");
+            $('#totalPrice').text(totalPrice+"€");
+        });
+
+
+		// box-shadow sous le menu lors du scroll
+		$(window).on('scroll', function() {
+			if ($(window).scrollTop() > 0) {
+				$('header').addClass('scroll');
+			} else {
+				$('header').removeClass('scroll');
+			}
+		});
+
+		//Popup connexion
+		$('.signup, .redirectConnexion').on('click', function(e) {
+			e.preventDefault();
+			$('body').addClass('popup-open');
+			$('.popup').show();
+			$('.popup-inscription').hide();
+			$('.popup-connexion').show();
+		});
+
+		//Popup inscription
+		$('.signin, .redirectInscription').on('click', function(e) {
+			e.preventDefault();
+			$('body').addClass('popup-open');
+			$('.popup').show();
+			$('.popup-inscription').show();
+			$('.popup-connexion').hide();
+		});
+
+		//Fermer la popup lors d'un clic en dehors de la popup
+		$(document).on(
+				'mouseup',
+				function(e) {
+					var container = $(".popup-content, #search");
+					if (!container.is(e.target)
+							&& container.has(e.target).length === 0) {
+						container.hide();
+						$('.popup').hide();
+						$('body').removeClass('popup-open');
+						container.find('.step').hide();
+						container.find('.step1').show();
+						container.find('.error').empty();
+					}
+				});
+
+		//Affichage de la recherche
+		$('#showSearch').on('click', function(e) {
+			e.preventDefault();
+			$('#search').show().focus();
+		});
+
+		//Masquage de la recherche
+		$('#closeSearch').on('click', function(e) {
+			e.preventDefault();
+			$('#search').hide();
+		});
+	</script>
+	<script type="text/javascript">
+	/*
+	$('#formPanier').on(
+			'submit',
+			function(e) {
+				e.preventDefault();
+				/*$.post('/EcommerceWeb/Panier',dataType: 'json', $(this).serialize(),
+						function(data) {
+							//console.log(data);
+							if (data.message == 'Stock insuffisant') {
+								$('article[data-id="'+data.id+'"] .error').text(data.message);
+							} else {
+								window.location = "/EcommerceWeb/Panier";
+							}
+
+						});
+				$.ajax({ 
+				    type: 'POST', 
+				    url: '/EcommerceWeb/Panier', 
+				    data: $(this).serialize(), 
+				    contentType: "application/json; charset=utf-8",
+				    dataType: 'json',
+				    success: function (data) {
+				    	console.log("titi");
+				    	console.log(data);
+				    	if (data.message == 'Stock insuffisant') {
+							$('article[data-id="'+data.id+'"] .error').text(data.message);
+						} else {
+							window.location = "/EcommerceWeb/Panier";
+						}
+				    },
+				    error: function(data) {
+				    	console.log("toto");
+				    }
+				});
+			});
+	*/
+	
+	
+
+</script>
+</body>
+</html>

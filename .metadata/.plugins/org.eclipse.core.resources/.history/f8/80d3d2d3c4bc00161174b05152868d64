@@ -1,0 +1,14 @@
+package org.commerce;
+
+import javax.persistence.Entity;
+
+@Entity
+public class Commande {
+
+	@HasMany
+	int NumFacture;
+	int idClient;
+	int idArticle;
+	int quantite;
+	double prix;
+}

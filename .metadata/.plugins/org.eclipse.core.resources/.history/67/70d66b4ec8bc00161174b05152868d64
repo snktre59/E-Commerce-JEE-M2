@@ -1,0 +1,21 @@
+package org.commerce;
+
+import java.util.Date;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
+/**
+ * Session Bean implementation class Commande
+ */
+@Stateless
+@LocalBean
+public class FactureStateless implements FactureRemote {
+
+	@Override
+	public Facture addFacture(int idClient, Date date, double total) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

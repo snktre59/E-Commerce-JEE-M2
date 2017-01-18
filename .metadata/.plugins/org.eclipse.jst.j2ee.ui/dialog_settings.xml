@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="true" key="J2EE_EXPORT_OVERWRITE"/>
+	<item value="false" key="J2EE_EXPORT_SOURCE"/>
+	<item value="EcommerceEAR" key="LASTEARNAME_"/>
+	<list key="J2EE_EXPORT_JST_EAR">
+		<item value="C:\Users\samir_qcedbge\Desktop\wildfly-10.0.0.Final\standalone\deployments\EcommerceEAR.ear"/>
+	</list>
+	<list key="MRU_RUNTIME_STORE">
+		<item value="NULL_RUNTIME"/>
+	</list>
+</section>

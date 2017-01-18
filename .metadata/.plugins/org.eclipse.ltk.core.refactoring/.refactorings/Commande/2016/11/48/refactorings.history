@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;org.commerce.Commande&apos; to &apos;CommandeStateless&apos;&#x0D;&#x0A;- Original project: &apos;Commande&apos;&#x0D;&#x0A;- Original element: &apos;org.commerce.Commande&apos;&#x0D;&#x0A;- Renamed element: &apos;org.commerce.CommandeStateless&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Commande&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/ejbModule&lt;org.commerce{Commande.java[Commande" matchStrategy="1" name="CommandeStateless" qualified="false" references="true" similarDeclarations="false" stamp="1480459392506" textual="false" version="1.0"/>
+</session>

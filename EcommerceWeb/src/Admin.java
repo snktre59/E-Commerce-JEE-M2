@@ -1,0 +1,56 @@
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.commerce.Commande;
+import org.commerce.CommandeRemote;
+import org.commerce.Facture;
+import org.commerce.FactureRemote;
+import org.commerce.Utilisateur;
+
+/**
+ * Servlet implementation class Admin
+ */
+@WebServlet("/Admin")
+public class Admin extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	@EJB
+	private FactureRemote facture;
+
+	@EJB
+	private CommandeRemote commande;
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Utilisateur user = (Utilisateur) request.getSession().getAttribute("utilisateur");
+		if( user != null && user.getRole().equals("admin")) {
+			List<Facture> f= facture.getFactures();
+			List<Commande> c = commande.getCommande();
+			if(f!=null) {
+				request.setAttribute("factures", f);
+				request.setAttribute("commandes", c);
+			}
+			getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
+		}
+		else response.sendRedirect("");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

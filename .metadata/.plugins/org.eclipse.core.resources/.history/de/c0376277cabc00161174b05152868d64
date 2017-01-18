@@ -1,0 +1,9 @@
+package org.commerce;
+
+import javax.ejb.Remote;
+
+@Remote
+public interface CommandeRemote {
+
+	public Commande addCommande(int numFacture, int idArticle, int idClient, double prix, int quantite);
+}

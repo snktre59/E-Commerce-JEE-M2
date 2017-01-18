@@ -1,0 +1,22 @@
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 0 2016-11-16 16:46:22.359
+!MESSAGE The server "WildFly 10.x" requires a JDK to run properly. The VM used to launch this server is not recognized as a valid JDK. C:\Program Files (x86)\Java\jre1.8.0_111 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842776 2016-11-16 16:47:20.683
+!MESSAGE Server shutting down
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842785 2016-11-16 16:47:21.921
+!MESSAGE Server Shutdown Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 0 2016-11-16 16:47:21.946
+!MESSAGE The server "WildFly 10.x" requires a JDK to run properly. The VM used to launch this server is not recognized as a valid JDK. C:\Program Files (x86)\Java\jre1.8.0_111 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2016-11-16 16:47:23.112
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2016-11-16 16:47:31.018
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842776 2016-11-16 16:48:13.069
+!MESSAGE Server shutting down

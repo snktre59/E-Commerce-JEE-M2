@@ -1,0 +1,39 @@
+package org.commerce;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+
+@Entity
+public class Facture {
+
+	private int numFacture;
+	private int idClient;
+	private Date date;
+	private double total;
+	
+	public int getNumFacture() {
+		return numFacture;
+	}
+	public void setNumFacture(int numFacture) {
+		this.numFacture = numFacture;
+	}
+	public int getIdClient() {
+		return idClient;
+	}
+	public void setIdClient(int idClient) {
+		this.idClient = idClient;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public double getTotal() {
+		return total;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
+}

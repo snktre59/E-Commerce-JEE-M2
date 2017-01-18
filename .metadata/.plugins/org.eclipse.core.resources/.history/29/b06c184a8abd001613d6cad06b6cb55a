@@ -1,0 +1,65 @@
+package org.commerce;
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+
+
+@Entity
+public class Commande implements Serializable {
+
+	private static final long serialVersionUID = -5396212969372812794L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	int idClient;
+	int idArticle;
+	int quantite;
+	double prix;
+	@ManyToOne
+	private Facture Factures;
+	
+	public Facture getFactures() {
+		return Factures;
+	}
+	public void setFactures(Facture factures) {
+		Factures = factures;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getIdClient() {
+		return idClient;
+	}
+	public void setIdClient(int idClient) {
+		this.idClient = idClient;
+	}
+	public int getIdArticle() {
+		return idArticle;
+	}
+	public void setIdArticle(int idArticle) {
+		this.idArticle = idArticle;
+	}
+	public int getQuantite() {
+		return quantite;
+	}
+	public void setQuantite(int quantite) {
+		this.quantite = quantite;
+	}
+	public double getPrix() {
+		return prix;
+	}
+	public void setPrix(double prix) {
+		this.prix = prix;
+	}
+	
+}

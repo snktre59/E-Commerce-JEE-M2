@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;CommandeRemote.java&apos; to &apos;Commande/ejbModule/org.commerce&apos;&#x0D;&#x0A;- Original project: &apos;CommandeClient&apos;&#x0D;&#x0A;- Destination element: &apos;Commande/ejbModule/org.commerce&apos;&#x0D;&#x0A;- Original element: &apos;org.commerce.CommandeRemote.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="=Commande/ejbModule&lt;org.commerce" element1="/ejbModule&lt;org.commerce{CommandeRemote.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1480459350067" units="1" version="1.0"/>
+</session>

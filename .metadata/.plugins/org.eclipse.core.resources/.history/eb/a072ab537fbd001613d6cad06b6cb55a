@@ -1,0 +1,12 @@
+package org.commerce;
+
+import javax.ejb.Remote;
+
+@Remote
+public interface FactureRemote {
+
+	public Facture addFacture(int idClient, double total);
+	
+	public Facture getFactures();
+
+}

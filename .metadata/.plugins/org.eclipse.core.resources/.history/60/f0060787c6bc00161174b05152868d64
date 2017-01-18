@@ -1,0 +1,28 @@
+package org.commerce;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+/**
+ * Session Bean implementation class Commande
+ */
+@Stateless
+@LocalBean
+public class CommandeStateless implements CommandeRemote {
+
+
+	@PersistenceContext(name = "BddService")
+	protected EntityManager em;
+
+	
+	public Utilisateur addFacture() {
+		Commande i = new Commande();
+		i.setNom(nom);
+	
+		em.persist(i);
+		return i;
+	}
+
+}

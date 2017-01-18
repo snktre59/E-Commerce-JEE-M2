@@ -1,0 +1,40 @@
+package org.commerce;
+
+import java.util.Date;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+
+
+/**
+ * Session Bean implementation class Commande
+ */
+@Stateless
+@LocalBean
+public class FactureStateless implements FactureRemote {
+
+	Date date = new Date();
+	@PersistenceContext(name = "BddService")
+	protected EntityManager em;
+	
+	
+	public Facture addFacture(int idClient, double total) {
+		Facture i = new Facture();
+		i.setIdClient(idClient);
+		i.setTotal(total);
+		em.persist(i);
+		return i;
+	}
+
+
+	@Override
+	public Facture getFactures() {
+		Query query = em.createQuery("SELECT f from Facture f");
+		return (Facture) query.getSingleResult();
+	}
+
+}
